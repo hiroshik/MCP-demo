@@ -1,0 +1,69 @@
+# Cursor Rules for Node.js Version Management
+
+## Node.js Version
+Always use Node.js version 20 for all commands. The project has a `.nvmrc` file specifying Node.js 20.
+
+### Command Execution Rules
+- Before executing any Node.js related commands (npm, node, npx, etc.), always ensure Node.js 20 is active
+- Use `nvm use 20` to switch to Node.js 20 if needed
+- When running terminal commands, prefix with `nvm use 20 &&` if the command involves Node.js
+
+### Examples of Commands to Use
+- `nvm use 20 && npm install`
+- `nvm use 20 && npm run dev`
+- `nvm use 20 && node --version`
+- `nvm use 20 && npx create-react-app my-app`
+
+### Package Management
+- Always use npm with Node.js 20
+- Ensure package.json and package-lock.json are compatible with Node.js 20
+- When installing packages, use `nvm use 20 && npm install <package-name>`
+
+### Development Commands
+- For development server: `nvm use 20 && npm run dev`
+- For building: `nvm use 20 && npm run build`
+- For testing: `nvm use 20 && npm test`
+- For linting: `nvm use 20 && npm run lint`
+
+### Verification
+- Always verify Node.js version with `nvm use 20 && node --version` before executing Node.js commands
+- The output should show `v20.x.x`
+
+### Environment Consistency
+- This ensures consistency across all development environments
+- Prevents version conflicts and compatibility issues
+- Aligns with the project's `.nvmrc` file 
+
+# Cursor Rules for JIRA Ticket Workflow
+
+## Git Branch Management for JIRA Tickets
+Always create a new branch from the develop branch when starting work on a new JIRA ticket.
+
+### Branch Creation Rules
+- When starting work on a new JIRA ticket, always switch to a new branch from develop
+- Use the JIRA ticket key as the branch name prefix (e.g., `MD-4-feature-description`)
+- Ensure the develop branch is up to date before creating the new branch
+- Always verify you're on the correct branch before making changes
+
+### Branch Naming Convention
+- Format: `{JIRA-TICKET-KEY}-{brief-description}`
+- Examples: `MD-4-user-authentication`, `MD-5-bug-fix`, `MD-6-feature-update`
+- Use kebab-case for the description part
+- Keep descriptions concise but descriptive
+
+### Workflow Steps
+1. Ensure you're on the develop branch: `git checkout develop`
+2. Pull latest changes: `git pull origin develop`
+3. Create and switch to new branch: `git checkout -b {JIRA-TICKET-KEY}-{description}`
+4. Verify you're on the new branch: `git branch`
+5. Start working on the ticket
+
+### Verification Commands
+- Check current branch: `git branch`
+- Verify branch is based on develop: `git log --oneline --graph --decorate`
+- Ensure develop is up to date: `git status` (should be clean on develop)
+
+### Commit Messages
+- Include JIRA ticket key in commit messages: `MD-4: Add user authentication feature`
+- Use conventional commit format when possible
+- Reference the ticket in the commit message for traceability 
