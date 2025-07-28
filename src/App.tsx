@@ -21,7 +21,6 @@ import {
   ListItemAvatar,
   Switch,
   FormControlLabel,
-  TextField,
   Alert,
   Snackbar
 } from '@mui/material';
@@ -224,46 +223,7 @@ function App() {
           </List>
         </Paper>
 
-        {/* Sample Form */}
-        <Paper elevation={2} sx={{ mt: 3, p: 3 }}>
-          <Typography variant="h6" gutterBottom>
-            Contact Form
-          </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
-              <TextField
-                fullWidth
-                label="First Name"
-                variant="outlined"
-                margin="normal"
-              />
-              <TextField
-                fullWidth
-                label="Last Name"
-                variant="outlined"
-                margin="normal"
-              />
-            </Box>
-            <TextField
-              fullWidth
-              label="Email"
-              type="email"
-              variant="outlined"
-              margin="normal"
-            />
-            <TextField
-              fullWidth
-              label="Message"
-              multiline
-              rows={4}
-              variant="outlined"
-              margin="normal"
-            />
-            <Button variant="contained" color="primary" size="large" sx={{ alignSelf: 'flex-start' }}>
-              Send Message
-            </Button>
-          </Box>
-        </Paper>
+
       </Container>
 
       {/* Floating Action Button */}
