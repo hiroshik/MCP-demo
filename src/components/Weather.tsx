@@ -61,6 +61,45 @@ const Weather: React.FC = () => {
   const TORONTO_LAT = 43.6532;
   const TORONTO_LON = -79.3832;
 
+  // Helper function to determine day status (past, current, future)
+  const getDayStatus = (dateString: string) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time to start of day
+    
+    const forecastDate = new Date(dateString);
+    forecastDate.setHours(0, 0, 0, 0);
+    
+    if (forecastDate < today) return 'past';
+    if (forecastDate.getTime() === today.getTime()) return 'current';
+    return 'future';
+  };
+
+  // Helper function to get day styling based on status
+  const getDayStyling = (status: 'past' | 'current' | 'future') => {
+    switch (status) {
+      case 'past':
+        return {
+          opacity: 0.6,
+          transition: 'opacity 0.3s ease-in-out',
+          '&:hover': {
+            opacity: 1,
+          },
+        };
+      case 'current':
+        return {
+          border: '2px solid',
+          borderImage: 'linear-gradient(45deg, #2196F3, #FF9800) 1',
+          boxShadow: '0 4px 8px rgba(33, 150, 243, 0.3)',
+        };
+      case 'future':
+        return {
+          // Keep current styling
+        };
+      default:
+        return {};
+    }
+  };
+
   const getWeatherIcon = (weatherCode: number) => {
     if (weatherCode === 0) return <SunnyIcon />;
     if (weatherCode >= 1 && weatherCode <= 3) return <CloudIcon />;
@@ -212,28 +251,44 @@ const Weather: React.FC = () => {
             7-Day Forecast
           </Typography>
           <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(3, 1fr)', md: 'repeat(7, 1fr)' }, gap: 2 }}>
-            {daily.time.slice(0, 7).map((date, index) => (
-              <Paper key={date} elevation={1} sx={{ p: 2, textAlign: 'center' }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  {new Date(date).toLocaleDateString('en-US', { weekday: 'short' })}
-                </Typography>
-                <Box display="flex" justifyContent="center" alignItems="center" my={1}>
-                  {getWeatherIcon(daily.weather_code[index])}
-                </Box>
-                <Typography variant="h6">
-                  {Math.round(daily.temperature_2m_max[index])}°
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {Math.round(daily.temperature_2m_min[index])}°
-                </Typography>
-                <Chip 
-                  label={`${daily.precipitation_probability_max[index]}%`}
-                  size="small"
-                  color="primary"
-                  sx={{ mt: 1 }}
-                />
-              </Paper>
-            ))}
+            {daily.time.slice(0, 7).map((date, index) => {
+              const dayStatus = getDayStatus(date);
+              const dayStyling = getDayStyling(dayStatus);
+              
+              return (
+                <Paper 
+                  key={date} 
+                  elevation={1} 
+                  sx={{ 
+                    p: 2, 
+                    textAlign: 'center',
+                    ...dayStyling
+                  }}
+                >
+                  <Typography variant="subtitle2" color="text.secondary">
+                    {new Date(date).toLocaleDateString('en-US', { weekday: 'short' })}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" display="block">
+                    {new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                  </Typography>
+                  <Box display="flex" justifyContent="center" alignItems="center" my={1}>
+                    {getWeatherIcon(daily.weather_code[index])}
+                  </Box>
+                  <Typography variant="h6">
+                    {Math.round(daily.temperature_2m_max[index])}°
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {Math.round(daily.temperature_2m_min[index])}°
+                  </Typography>
+                  <Chip 
+                    label={`${daily.precipitation_probability_max[index]}%`}
+                    size="small"
+                    color="primary"
+                    sx={{ mt: 1 }}
+                  />
+                </Paper>
+              );
+            })}
           </Box>
         </CardContent>
       </Card>
